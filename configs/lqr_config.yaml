@@ -1,0 +1,22 @@
+seed: 42
+
+problem:
+  a: -0.5
+  b: 1.0
+  q: 1.0
+  r: 0.1
+  T: 2.0
+  x_min: -2.0
+  x_max: 2.0
+
+training:
+  num_collocation: 5000
+  num_terminal: 1000
+  epochs: 1000
+  lr: 1.0e-3
+  lambda_term: 10.0
+
+model:
+  hidden_layers: 3
+  hidden_units: 64
+  activation: tanh

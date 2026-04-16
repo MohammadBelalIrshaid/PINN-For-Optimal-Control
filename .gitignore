@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Local experiment artifacts
+data/
+checkpoints/
+results/
+debug_outputs/
+
+# Model / serialized artifacts
+*.pt
+*.pth
+*.pkl
+*.pickle
+
+# Notebook exports / generated media
+*.gif
+*.mp4
+*.png
+*.pdf
+*.csv

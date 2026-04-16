@@ -1,0 +1,158 @@
+seed: 42
+data_paths:
+  epic_lab_base: E:/Dissertation/EPIC_LAB_csv_all
+  siat_llmd_base: E:/Dissertation/EMG_DL_Nour/SIAT_LLMD20230404/SIAT_LLMD20230404
+exo_params:
+  I: 2.1945858001708984
+  B: -14.5637845993042
+  m: 1.0
+  g: 9.81
+  l: 0.024066423421970566
+params:
+  enforce_positive_damping: true
+cost_weights:
+  w_track: 10.0
+  w_omega: 0.1
+  w_u: 0.02
+loss:
+  w_hjb: 0.2
+  w_term: 5.0
+  w_data: 5.0
+  w_traj: 1.0
+  w_sat: 1.0
+  w_box: 0.0
+  w_u_mag: 0.0
+  use_rollout_loss: true
+  w_rollout: 1.0
+  rollout_horizon: 0.25
+  rollout_batch: 16
+  rollout_steps: 20
+  use_u_match: true
+  w_u_match: 0.5
+  torque_error_threshold: 0.1
+  normalize_per_batch: true
+  adaptive_weights: false
+  adaptive_clip_min: 0.1
+  adaptive_clip_max: 10.0
+  qf_theta: 10.0
+  qf_omega: 1.0
+schedule:
+  enable: true
+  stage_A_epochs: 3000
+  stage_B_epochs: 3000
+  stage_A:
+    w_hjb: 0.0
+    w_data: 5.0
+    w_traj: 1.0
+    w_term: 5.0
+    w_sat: 0.1
+    w_rollout: 1.0
+    w_u_match: 0.5
+  stage_B:
+    w_data: 5.0
+    w_traj: 1.0
+    w_term: 5.0
+    w_sat: 0.5
+    w_rollout: 1.0
+    w_u_match: 0.25
+  stage_C:
+    use_final: true
+training:
+  mode: pure_hjb
+  use_synthetic_ref: false
+  staged:
+    enabled: false
+    phase1_epochs: 3000
+    phase2_epochs: 5000
+    phase2_hjb_scale: 0.1
+  lambda_hjb: 1.0
+  lambda_term: 1.0
+  lambda_data: 0.0
+  lambda_traj: 0.0
+  lambda_sat: 0.0
+  lambda_res_reg: 0.0
+  epochs: 20000
+  lr: 0.0005
+  num_collocation: 15000
+  num_terminal: 2000
+  log_every: 1
+  grad_clip: 5.0
+  grad_ema_beta: 0.98
+control:
+  u_max: 20.0
+  use_saturated_hjb: true
+  use_tanh_saturation: false
+  u_scale: 1.0
+  cap_multiplier: true
+  multiplier_cap: 1000.0
+hjb:
+  use_u_bounded_in_residual: true
+dynamics:
+  use_residual: false
+  residual_ckpt: checkpoints/residual_net.pt
+  residual_guard: true
+  guard_theta_min: -1.0
+  guard_theta_max: 1.0
+  guard_omega_min: -5.0
+  guard_omega_max: 5.0
+collocation:
+  theta_min: -1.2
+  theta_max: 1.2
+  omega_min: -6.0
+  omega_max: 6.0
+  t_min: 0.0
+  t_max: 1.0
+sample:
+  enforce_bounds: true
+  reject_out_of_bounds: true
+  max_resample_tries: 50
+  auto_expand_report: true
+  auto_expand_apply: false
+  auto_expand_pad: 0.1
+  auto_expand_epochs: 5
+  auto_expand_threshold: 0.05
+reference:
+  type: synthetic
+  synthetic:
+    kind: half_sine
+    amplitude: 0.5
+    offset: 0.0
+    period: 1.0
+loss_balance:
+  enabled: true
+  method: ema
+  ema_beta: 0.98
+  target: 1.0
+  min_weight: 0.1
+  max_weight: 10.0
+state_reg:
+  enabled: true
+  q_max: 2.5
+  dq_max: 8.0
+debug:
+  enabled: true
+  log_every: 200
+  rollout_check_every: 2000
+  sanity: false
+  run_sanity: true
+  report_objective: true
+time:
+  normalize: false
+  T_phys: 1.0
+rollout:
+  integrator: rk4
+  dt: 0.002
+  debug_every: 1000
+  output_dir: debug_outputs
+  stop_on_oob: true
+  clamp_on_oob: false
+  oob_epsilon: 0.0
+baseline:
+  enable_pd: true
+  Kp: 30.0
+  Kd: 5.0
+  compare_plots: true
+model:
+  hidden_layers: 4
+  hidden_units: 128
+  activation: tanh
