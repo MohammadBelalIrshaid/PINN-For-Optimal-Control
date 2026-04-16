@@ -21,9 +21,7 @@ env/
 Thumbs.db
 
 # Local experiment artifacts
-data/
 checkpoints/
-results/
 debug_outputs/
 
 # Model / serialized artifacts
@@ -38,3 +36,9 @@ debug_outputs/
 *.png
 *.pdf
 *.csv
+
+# Track published datasets and result assets in this repository
+!data/
+!data/**
+!results/
+!results/**
